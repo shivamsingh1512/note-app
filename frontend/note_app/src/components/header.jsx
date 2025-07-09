@@ -7,14 +7,13 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ Check authentication status
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const res = await axios.get("http://localhost:3000/api/check-auth", {
           withCredentials: true,
         });
-        setIsLoggedIn(res.data.authenticated); // Assuming your backend returns { authenticated: true }
+        setIsLoggedIn(res.data.authenticated); 
       } catch (err) {
         setIsLoggedIn(false);
       }
@@ -22,7 +21,6 @@ const Header = () => {
     checkAuth();
   }, [location]);
 
-  // ✅ Logout handler
   const handleLogout = async () => {
     try {
       await axios.post("http://localhost:3000/api/logout", {}, { withCredentials: true });
