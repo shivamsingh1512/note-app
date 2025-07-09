@@ -1,7 +1,22 @@
+const mongoose = require('mongoose');
+
 const noteSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  content: String,
-  createdAt: { type: Date, default: Date.now },
+  userId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User',
+    required: [true, 'User ID is required']  
+  },
+  content: {
+    type: String,
+    required: [true, 'Content is required'],
+    
+    minlength: [1, 'Content cannot be empty']
+  },
+  createdAt: { 
+    type: Date, 
+    default: Date.now,
+    immutable: true  
+  }
 });
 
-export default mongoose.model('Note', noteSchema);
+module.exports = mongoose.model('Note', noteSchema);

@@ -54,8 +54,14 @@ const logIn = async (req,res) =>{
         if (!isMatch){
             return res.status(400).json({ message: 'Invalid credentials' });
         }
-        const token = jwt.sign({ userId: user._id }, process.env.jwt_key);
-         console.log(`✅ Login successful for user: ${user.email}`);
+        const token = jwt.sign({ _id: user._id }, process.env.jwt_key, { expiresIn: '7d' });
+         res.cookie('token', token, {
+            httpOnly: true,
+            sameSite: 'strict',
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+         console.log(` Login successful for user: ${user.email}`);
         res.json({ token });
     } catch(err){
         console.error('Login Error:', err);
